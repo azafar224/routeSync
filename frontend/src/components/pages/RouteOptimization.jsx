@@ -18,7 +18,6 @@ const RouteOptimization = () => {
   const [vehicles, setVehicles] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [showMap, setShowMap] = useState(false);
 
   // Handle file drop using react-dropzone
   const onDrop = (acceptedFiles) => {
@@ -43,12 +42,10 @@ const RouteOptimization = () => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://127.0.0.1:3001/route_optimization/upload",
         formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       alert("Routes generated successfully!");
@@ -76,32 +73,6 @@ const RouteOptimization = () => {
       console.error("Error fetching vehicles:", error);
     }
   };
-
-  const handleDisplayMap = async () => {
-    if (!selectedVehicle) {
-      alert("Please select a vehicle first.");
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:3001/route_optimization/getRoutedDeliveries`
-      );
-      const selectedRoute = response.data.deliveries.find(
-        (route) => route.vehicle_id === selectedVehicle.value
-      );
-      if (selectedRoute) {
-        setRoutes(selectedRoute.route_sequence);
-        setShowMap(true);
-      } else {
-        alert("No route found for the selected vehicle.");
-      }
-    } catch (error) {
-      console.error("Error fetching route:", error);
-      alert("Error fetching route for the map.");
-    }
-  };
-
   const handleDownloadRoutes = async (
     vehicleId = "all",
     withStatus = false
@@ -137,12 +108,32 @@ const RouteOptimization = () => {
       alert("Error downloading routes.");
     }
   };
-
-  const renderMap = () => {
-    if (!routes || routes.length === 0) {
-      return <p>No route to display for the selected vehicle.</p>;
+  const handleDisplayMap = async () => {
+    if (!selectedVehicle) {
+      alert("Please select a vehicle first.");
+      return;
     }
 
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:3001/route_optimization/getRoutedDeliveries`
+      );
+      const selectedRoute = response.data.deliveries.find(
+        (route) => route.vehicle_id === selectedVehicle.value
+      );
+      if (selectedRoute) {
+        setRoutes(selectedRoute.route_sequence);
+      } else {
+        alert("No route found for the selected vehicle.");
+      }
+    } catch (error) {
+      console.error("Error fetching route:", error);
+      alert("Error fetching route for the map.");
+    }
+  };
+
+  const renderMap = () => {
+    const defaultCenter = [31.337319, 73.057297]; // Default center (San Francisco)
     const positions = routes.map((point) => [
       parseFloat(point["Dest Geo Lat"]),
       parseFloat(point["Dest Geo Lon"]),
@@ -150,7 +141,7 @@ const RouteOptimization = () => {
 
     return (
       <MapContainer
-        center={positions[0]}
+        center={positions[0] || defaultCenter}
         zoom={12}
         style={{ height: "500px", width: "100%" }}
       >
@@ -158,7 +149,7 @@ const RouteOptimization = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Polyline positions={positions} color="blue" />
+        {routes.length > 0 && <Polyline positions={positions} color="blue" />}
         {routes.map((point, index) => (
           <Marker
             key={index}
@@ -233,79 +224,103 @@ const RouteOptimization = () => {
             >
               Download All Routes
             </button>
-            <button
-              onClick={() => handleDownloadRoutes("all", true)}
-              className="btn btn-warning"
-            >
-              Download All Routes with Status
-            </button>
           </div>
-          <div className="map-container mt-4">{showMap && renderMap()}</div>
+          <div className="map-container mt-4">{renderMap()}</div>
         </div>
       </main>
-      <style>{`
+      <style jsx>{`
         .container-fluid {
           display: flex;
           height: 100vh;
           overflow: hidden;
-          background-color: #f8f9fa;
+          background: linear-gradient(115deg, #3d00a6, #0c0014);
         }
+
         .main-content {
           margin-left: 230px;
-          background-color: #f8f9fa;
+          background: linear-gradient(115deg, #3d00a6, #0c0014);
           padding: 20px;
           margin-top: 60px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          width: 90%;
+          width: 100%;
           overflow-y: auto;
         }
+
+        .main-content::-webkit-scrollbar {
+          width: 12px; /* Scrollbar width */
+          position: fixed;
+          right: 0;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+          background: #dfe6e9; /* Light track background */
+          border-radius: 10px; /* Rounded corners */
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+          background-color: #6c5ce7; /* Thumb color */
+          border-radius: 10px; /* Rounded corners */
+          border: 2px solid transparent; /* Space around thumb */
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+          background-color: #4a3fb2; /* Darker thumb color on hover */
+        }
+
         .route-optimization-content {
           width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
         }
+
         .upload-container {
           width: 100%;
           max-width: 400px;
           padding: 20px;
-          border: 2px dashed #213555;
+          border: 2px dashed rgba(21, 137, 255, 0.8);
           border-radius: 10px;
           text-align: center;
-          background-color: #f8f9fa;
-          transition: background-color 0.3s ease;
+          background: rgba(3, 3, 61, 0.9);
+          color: #ffffff;
         }
+
         .upload-container:hover {
-          background-color: #e9ecef;
+          background: rgba(3, 3, 100, 1);
         }
+
         .upload-container p {
           margin: 0;
-          color: #f15b5b;
           font-weight: bold;
         }
+
         .upload-container span {
-          color: #213555;
+          color: rgba(21, 137, 255, 1);
           text-decoration: underline;
           cursor: pointer;
         }
+
         .file-name {
           margin-top: 10px;
           font-size: 14px;
-          color: #6c757d;
+          color: #ffffff;
         }
+
         .button-group {
           display: flex;
           justify-content: center;
           gap: 15px;
           width: 100%;
         }
+
         .dropdown {
           width: 100%;
           max-width: 400px;
-          z-index:2;
+          z-index: 2;
         }
+
         .map-container {
           height: 500px;
           width: 80%;
@@ -317,18 +332,25 @@ const RouteOptimization = () => {
           align-items: center;
           z-index: 1;
         }
+
         .btn {
           flex: 1;
-          max-width: 200px;
-          border-radius: 20px;
           padding: 10px 20px;
-          background-color: #f15b5b;
-          color: #FFFFFF;
-          transition: background-color 0.3s ease;
+          border-radius: 5px;
+          background-color: #0056b3;
+          color: #ffffff;
+          border: none;
+          cursor: pointer;
+          margin: auto;
+          font-weight: bold;
           text-align: center;
+          transition: background 0.3s;
         }
+
         .btn:hover {
           opacity: 0.9;
+          background-color: #0a3981;
+          color: #ffffff;
         }
       `}</style>
     </div>

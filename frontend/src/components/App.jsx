@@ -5,7 +5,7 @@ import Login from "./forms/Login";
 import Register from "./forms/Register";
 import RouteOptimization from "./pages/RouteOptimization";
 import TrackDeliveries from "./pages/TrackDeliveries";
-import RoleManagement from "./pages/RoleManagement";
+import VehicleRoutesMap from "./pages/VehicleRoutesMap";
 import ForgotPassword from "./forms/ForgotPassword";
 import ResetPassword from "./forms/ResetPassword";
 
@@ -33,10 +33,10 @@ function App() {
             }
           />
           <Route
-            path="/rolemanagement"
+            path="/vehicleroutesmap"
             element={
               <PrivateRoute>
-                <RoleManagement />
+                <VehicleRoutesMap />
               </PrivateRoute>
             }
           />

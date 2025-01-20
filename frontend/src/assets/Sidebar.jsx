@@ -1,6 +1,12 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaHome, FaRoute, FaTruck, FaSignOutAlt, FaMap } from "react-icons/fa";
+import {
+  FaHome,
+  FaRoute,
+  FaTruck,
+  FaSignOutAlt,
+  FaUserCircle,
+} from "react-icons/fa";
 import axios from "axios";
 import logo from "./../../assets/newlogo.jpg";
 
@@ -59,21 +65,19 @@ const Sidebar = ({ isOpen }) => {
             </Link>
           </li>
           <li
-            className={
-              location.pathname === "/vehicleroutesmap" ? "active" : ""
-            }
-          >
-            <Link to="/vehicleroutesmap">
-              <FaMap className="icon" />
-              {isOpen && <span>Map</span>}
-            </Link>
-          </li>
-          <li
             className={location.pathname === "/trackdeliveries" ? "active" : ""}
           >
             <Link to="/trackdeliveries">
               <FaTruck className="icon" />
               {isOpen && <span>Track Deliveries</span>}
+            </Link>
+          </li>
+          <li
+            className={location.pathname === "/rolemanagement" ? "active" : ""}
+          >
+            <Link to="/rolemanagement">
+              <FaUserCircle className="icon" />
+              {isOpen && <span>Role Management</span>}
             </Link>
           </li>
           <li>

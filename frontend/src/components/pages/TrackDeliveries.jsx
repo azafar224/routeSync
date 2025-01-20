@@ -250,16 +250,40 @@ const TrackDeliveries = () => {
         .container-fluid {
           display: flex;
           height: 100vh;
+          width: 100%;
           overflow: hidden;
+          background: linear-gradient(115deg, #3d00a6, #0c0014);
         }
 
         .main-content {
-          margin-left: ${isOpen ? "240px" : "80px"};
+          margin-left: ${isOpen ? "230px" : "80px"};
           margin-top: 60px;
-          padding: 20px 20px 20px; /* Push content below header */
-          background-color: #f8f9fa;
+          width: 100%;
+          padding: 20px;
+          background: linear-gradient(115deg, #3d00a6, #0c0014);
           flex-grow: 1;
           overflow-y: auto;
+        }
+
+        .main-content::-webkit-scrollbar {
+          width: 12px; /* Adjust scrollbar width */
+          position: fixed;
+          right: 0;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+          background: #dfe6e9; /* Light background for the scrollbar track */
+          border-radius: 10px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+          background-color: #6c5ce7; /* Purple color for the scrollbar thumb */
+          border-radius: 10px; /* Rounded corners */
+          border: 2px solid transparent; /* Optional border to add space */
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+          background-color: #4a3fb2; /* Darker shade when hovered */
         }
 
         .content {
@@ -276,6 +300,7 @@ const TrackDeliveries = () => {
         .filter-container label {
           font-size: 16px;
           font-weight: bold;
+          color: #e8f9ff;
         }
 
         .form-select {
@@ -293,7 +318,7 @@ const TrackDeliveries = () => {
         }
 
         .delivery-card {
-          background: white;
+          background: #021526;
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           padding: 20px;
@@ -310,20 +335,23 @@ const TrackDeliveries = () => {
           border-bottom: 1px solid #ddd;
           padding-bottom: 10px;
           margin-bottom: 10px;
+          color: #155e95;
         }
 
         .vehicle-number {
           font-size: 16px;
           font-weight: bold;
+          color: #e8f9ff;
         }
 
         .vehicle-icon {
           margin-right: 5px;
+          color: #ff7f3e;
         }
 
         .delivery-date {
           font-size: 14px;
-          color: #6c757d;
+          color: #e8f9ff;
         }
 
         .status {
@@ -336,7 +364,7 @@ const TrackDeliveries = () => {
 
         .status.in-progress {
           color: white;
-          background-color: #ffc107;
+          background-color: #0056b3;
         }
 
         .status.complete {
@@ -351,6 +379,7 @@ const TrackDeliveries = () => {
 
         .stops {
           margin: 10px 0;
+          color: #e8f9ff;
         }
 
         .stops h5 {
@@ -364,9 +393,27 @@ const TrackDeliveries = () => {
           overflow-y: auto;
           padding-right: 10px;
         }
+        .stops-list::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .stops-list::-webkit-scrollbar-track {
+          background: #dfe6e9;
+          border-radius: 10px;
+        }
+
+        .stops-list::-webkit-scrollbar-thumb {
+          background-color: #6c5ce7;
+          border-radius: 10px;
+          border: 2px solid transparent;
+        }
+
+        .stops-list::-webkit-scrollbar-thumb:hover {
+          background-color: #4a3fb2;
+        }
 
         .stop-item {
-          background: #f8f9fa;
+          background: #1f509a;
           padding: 8px;
           border-radius: 5px;
           margin-bottom: 5px;
@@ -390,7 +437,7 @@ const TrackDeliveries = () => {
         }
 
         .status-btn.complete {
-          background-color: #28a745;
+          background-color: #5cb338;
         }
 
         .status-btn.complete:hover {
@@ -398,7 +445,7 @@ const TrackDeliveries = () => {
         }
 
         .status-btn.incomplete {
-          background-color: #dc3545;
+          background-color: rgba(255, 81, 97, 1);
         }
 
         .status-btn.incomplete:hover {
@@ -419,7 +466,7 @@ const TrackDeliveries = () => {
         .btn-primary.download-all-btn {
           padding: 10px 20px;
           border-radius: 5px;
-          background-color: #f15b5b;
+          background-color: #0056b3;
           color: white;
           border: none;
           cursor: pointer;
@@ -427,7 +474,7 @@ const TrackDeliveries = () => {
         }
 
         .btn-primary.download-all-btn:hover {
-          background-color: #0056b3;
+          background-color: #0a3981;
         }
       `}</style>
     </div>

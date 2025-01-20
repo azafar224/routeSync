@@ -11,7 +11,6 @@ POPULATION_SIZE = 100
 NUM_GENERATIONS = 50
 MUTATION_RATE = 0.1
 
-# Make sure the MODEL_PATH is correct
 MODEL_PATH = r"G:\FYP_Sys\backend\ml_models\vehicle_route_model_best.keras"
 
 # Try loading the RL model

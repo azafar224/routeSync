@@ -12,7 +12,6 @@ users_collection = db.users
 
 @role_blueprint.route('/grantRole', methods=['POST'])
 def grant_role():
-    """Allows administrators to grant or update roles for other users."""
     if 'user' not in session:
         return jsonify({'message': 'Access denied. You must be logged in to perform this action.'}), 403
 
@@ -35,10 +34,8 @@ def grant_role():
 
     return jsonify({'message': f'Role updated to {new_role} for {email}'}), 200
 
-
 @role_blueprint.route('/users', methods=['GET'])
 def get_users():
-    """Allows administrators to view all registered users."""
     if 'user' not in session:
         return jsonify({'message': 'Access denied. You must be logged in to perform this action.'}), 403
 
@@ -47,7 +44,6 @@ def get_users():
 
     users = list(users_collection.find({}, {'_id': 0, 'password': 0}))
     return jsonify({'users': users}), 200
-
 
 @role_blueprint.route('/currentUser', methods=['GET'])
 def get_current_user():

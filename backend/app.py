@@ -8,7 +8,6 @@ import os
 import logging
 
 from routes.auth import auth_blueprint
-from routes.role_management import role_blueprint
 from routes.route_optimization import route_optimization_blueprint
 from routes.download import download_blueprint
 from routes.delivery import delivery_blueprint
@@ -61,7 +60,6 @@ initialize_admin()
 
 # Register Blueprints
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
-app.register_blueprint(role_blueprint, url_prefix='/role_management')
 app.register_blueprint(route_optimization_blueprint, url_prefix='/route_optimization')
 app.register_blueprint(download_blueprint, url_prefix='/download')
 app.register_blueprint(delivery_blueprint, url_prefix='/delivery')

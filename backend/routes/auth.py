@@ -72,7 +72,7 @@ def register():
             'name': name,
             'email': email,
             'password': hashed_password,
-            'role': 'user'
+            'role': 'Administrator'
         })
 
         return jsonify({'message': 'User registered successfully'}), 201
@@ -113,7 +113,6 @@ def login():
     except Exception as e:
         logging.error(f"Error during login: {e}")
         return jsonify({'message': 'An error occurred during login', 'error': str(e)}), 500
-
 
 @auth_blueprint.route('/logout', methods=['POST'])
 def logout():

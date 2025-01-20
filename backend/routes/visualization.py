@@ -15,11 +15,11 @@ routes_collection = db.routes
 def get_completion_rate():
     """Fetch the completion rate of deliveries for the last 10 days."""
     try:
-        # Calculate the date 10 days ago
-        ten_days_ago = (datetime.now() - timedelta(days=10)).strftime('%m/%d/%Y')
+        # Calculate the date 7 days ago
+        ten_days_ago = (datetime.now() - timedelta(days=7)).strftime('%d/%m/%Y')
 
         pipeline = [
-            {"$match": {"date": {"$gte": ten_days_ago}}},  # Filter for last 10 days
+            {"$match": {"date": {"$gte": ten_days_ago}}},  # Filter for last 7 days
             {"$group": {
                 "_id": "$date",
                 "total_deliveries": {"$sum": 1},
@@ -51,7 +51,7 @@ def get_completion_rate():
 def get_delivery_points():
     """Fetch the total number of delivery points for the last 10 days."""
     try:
-        ten_days_ago = (datetime.now() - timedelta(days=10)).strftime('%m/%d/%Y')
+        ten_days_ago = (datetime.now() - timedelta(days=7)).strftime('%d/%m/%Y')
 
         pipeline = [
             {"$match": {"date": {"$gte": ten_days_ago}}},  # Filter for last 10 days
@@ -81,13 +81,13 @@ def get_daily_deliveries():
     """
     try:
         date = request.args.get('date')  # Date passed in MM/DD/YYYY format
-        ten_days_ago = (datetime.now() - timedelta(days=10)).strftime('%m/%d/%Y')
+        ten_days_ago = (datetime.now() - timedelta(days=7)).strftime('%d/%m/%Y')
 
         pipeline = []
 
         if date:
             try:
-                datetime.strptime(date, '%m/%d/%Y')  # Validate the format
+                datetime.strptime(date, '%d/%m/%Y')  # Validate the format
                 pipeline.append({"$match": {"date": date}})
             except ValueError:
                 return jsonify({"error": "Invalid date format. Use MM/DD/YYYY."}), 400
